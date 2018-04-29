@@ -71,17 +71,17 @@ class AuthleteLaravelConfiguration implements AuthleteConfiguration
      */
     public function __construct()
     {
-        $this->baseUrl               = self::get($KEY_BASE_URL);
-        $this->serviceOwnerApiKey    = self::get($KEY_SERVICE_OWNER_API_KEY);
-        $this->serviceOwnerApiSecret = self::get($KEY_SERVICE_OWNER_API_SECRET);
-        $this->serviceApiKey         = self::get($KEY_SERVICE_API_KEY);
-        $this->serviceApiSecret      = self::get($KEY_SERVICE_API_SECRET);
+        $this->baseUrl               = self::get(self::$KEY_BASE_URL);
+        $this->serviceOwnerApiKey    = self::get(self::$KEY_SERVICE_OWNER_API_KEY);
+        $this->serviceOwnerApiSecret = self::get(self::$KEY_SERVICE_OWNER_API_SECRET);
+        $this->serviceApiKey         = self::get(self::$KEY_SERVICE_API_KEY);
+        $this->serviceApiSecret      = self::get(self::$KEY_SERVICE_API_SECRET);
 
         // If the value of 'base_url' is not available.
         if (is_null($this->baseUrl) || empty($this->baseUrl))
         {
             // Use the default value for 'base_url'.
-            $this->baseUrl = $DEFAULT_BASE_URL;
+            $this->baseUrl = self::$DEFAULT_BASE_URL;
         }
     }
 
