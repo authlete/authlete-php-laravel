@@ -11,7 +11,7 @@
     ],
     "homepage": "https://github.com/authlete/authlete-php-laravel",
     "require": {
-        "authlete/authlete": ">=1.0.0",
+        "authlete/authlete": ">=1.0.1",
         "laravel/framework": ">=5"
     },
     "autoload": {
