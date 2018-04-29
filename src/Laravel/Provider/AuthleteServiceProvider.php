@@ -68,7 +68,7 @@ class AuthleteServiceProvider extends ServiceProvider
         // Register an instance that implements the AuthleteApi interface.
         $this->app->singleton(
             \Authlete\Api\AuthleteApi::class,
-            function () { return instantiateAuthleteApi(); }
+            function () { return self::instantiateAuthleteApi(); }
         );
     }
 
@@ -76,7 +76,7 @@ class AuthleteServiceProvider extends ServiceProvider
     /**
      * Create an instance which implements the AuthleteApi interface.
      */
-    private function instantiateAuthleteApi()
+    private static function instantiateAuthleteApi()
     {
         // Create an instance of AuthleteApiImp which implements AuthleteApi.
         // AuthleteLaravelConfiguration refers to 'config/authlete.php' to
