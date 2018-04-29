@@ -40,10 +40,10 @@ use Authlete\Conf\AuthleteConfigurationTrait;
  * <?php
  * return [
  *     'base_url'                 => 'https://api.authlete.com',
- *     'service_owner.api_key'    => '',
- *     'service_owner.api_secret' => '',
- *     'service.api_key'          => '',
- *     'service.api_secret'       => ''
+ *     'service_owner_api_key'    => '',
+ *     'service_owner_api_secret' => '',
+ *     'service_api_key'          => '',
+ *     'service_api_secret'       => ''
  * ];
  * ?>
  * ```
@@ -58,10 +58,10 @@ class AuthleteLaravelConfiguration implements AuthleteConfiguration
 
     private static $CONFIGURATION_BASE_NAME      = 'authlete';
     private static $KEY_BASE_URL                 = 'base_url';
-    private static $KEY_SERVICE_OWNER_API_KEY    = 'service_owner.api_key';
-    private static $KEY_SERVICE_OWNER_API_SECRET = 'service_owner.api_secret';
-    private static $KEY_SERVICE_API_KEY          = 'service.api_key';
-    private static $KEY_SERVICE_API_SECRET       = 'service.api_secret';
+    private static $KEY_SERVICE_OWNER_API_KEY    = 'service_owner_api_key';
+    private static $KEY_SERVICE_OWNER_API_SECRET = 'service_owner_api_secret';
+    private static $KEY_SERVICE_API_KEY          = 'service_api_key';
+    private static $KEY_SERVICE_API_SECRET       = 'service_api_secret';
     private static $DEFAULT_BASE_URL             = 'https://api.authlete.com';
 
 
