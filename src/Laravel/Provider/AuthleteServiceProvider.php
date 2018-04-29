@@ -96,7 +96,7 @@ class AuthleteServiceProvider extends ServiceProvider
         // access Authlete APIs. AuthleteLaravelConfiguration class refers
         // to the configuration file.
         $this->publishes([
-            __DIR__ . '/config/authlete.php' => config_path('authlete.php')
+            __DIR__ . '/../../../config/authlete.php' => config_path('authlete.php')
         ]);
     }
 }
