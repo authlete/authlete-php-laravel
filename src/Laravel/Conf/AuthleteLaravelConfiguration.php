@@ -91,7 +91,7 @@ class AuthleteLaravelConfiguration implements AuthleteConfiguration
      */
     private static function get($key)
     {
-        return config("${CONFIGURATION_BASE_NAME}.${key}");
+        return config(self::$CONFIGURATION_BASE_NAME . ".${key}");
     }
 }
 ?>
