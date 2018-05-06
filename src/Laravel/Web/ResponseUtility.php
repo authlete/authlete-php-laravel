@@ -179,23 +179,8 @@ class ResponseUtility
      */
     public static function unauthorized($challenge, $content = null)
     {
-        $response = null;
-
-        if (is_null($content))
-        {
-            // 401 Unauthorized
-            $response = self::buildResponseBase(Response::HTTP_UNAUTHORIZED);
-        }
-        else
-        {
-            // 401 Unauthorized with JSON
-            $response = self::buildResponseJson(Response::HTTP_UNAUTHORIZED, $content);
-        }
-
-        // WWW-Authenticate: $challenge
-        $response->headers->set('WWW-Authenticate', $challenge);
-
-        return $response;
+        // 401 Unauthorized with a WWW-Authenticate header.
+        return self::wwwAuthenticate(Response::HTTP_UNAUTHORIZED, $challenge, $content);
     }
 
 
@@ -250,6 +235,43 @@ class ResponseUtility
     {
         // 500 Internal Server Error, application/json;charset=UTF-8
         return self::buildResponseJson(Response::HTTP_INTERNAL_SERVER_ERROR, $content);
+    }
+
+
+    /**
+     * Create a response with a WWW-Authenticate header.
+     *
+     * @param integer $statusCode
+     *     HTTP status code of the response.
+     *
+     * @param string $challenge
+     *     The value of the `WWW-Authenticate` header.
+     *
+     * @param string $content
+     *     The content formatted in `application/json;charset=UTF-8'.
+     *     This parameter is optional.
+     *
+     * @return Response
+     *     An HTTP response with the specified status code and a
+     *     `WWW-Authenticate` header, and optionally with JSON.
+     */
+    public static function wwwAuthenticate($statusCode, $challenge, $content = null)
+    {
+        $response = null;
+
+        if (is_null($content))
+        {
+            $response = self::buildResponseBase($statusCode);
+        }
+        else
+        {
+            $response = self::buildResponseJson($statusCode, $content);
+        }
+
+        // WWW-Authenticate: $challenge
+        $response->headers->set('WWW-Authenticate', $challenge);
+
+        return $response;
     }
 
 
