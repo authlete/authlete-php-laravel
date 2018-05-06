@@ -56,7 +56,7 @@ class ConfigurationRequestHandler extends BaseRequestHandler
      *     `true` to format the output JSON in a more human-readable way.
      *
      * @return Response
-     *     A HTTP response that should be returned from the JWK Set document
+     *     An HTTP response that should be returned from the JWK Set document
      *     endpoint implementation to the client application.
      *
      * @throws AuthleteApiException
