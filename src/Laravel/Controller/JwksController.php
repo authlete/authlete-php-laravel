@@ -28,6 +28,7 @@ namespace Authlete\Laravel\Controller;
 use Authlete\Api\AuthleteApi;
 use Authlete\Laravel\Handler\JwksRequestHandler;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 
 /**
@@ -46,6 +47,15 @@ use App\Http\Controllers\Controller;
  */
 class JwksController extends Controller
 {
+    /**
+     * The entry point of this controller.
+     *
+     * @param AuthleteApi $api
+     *     An implementation of the `AuthleteApi` interface.
+     *
+     * @return Response
+     *     A response that should be returned to the client.
+     */
     public function __invoke(AuthleteApi $api)
     {
         return (new JwksRequestHandler($api))->handle();
