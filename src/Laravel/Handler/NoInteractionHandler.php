@@ -42,7 +42,7 @@ use Illuminate\Http\Response;
  * `AuthorizationAction::$NO_INTERACTION`, the authorization request needs to
  * be processed without user interaction. This class is a handler for the case.
  */
-class AuthorizationRequestDecisionHandler extends AuthorizationRequestBaseHandler
+class NoInteractionHandler extends AuthorizationRequestBaseHandler
 {
     private $spi = null;  // \Authlete\Laravel\Handler\Spi\NoInteractionHandlerSpi
 

@@ -37,7 +37,7 @@ use Illuminate\Http\Response;
 /**
  * Handler for requests to a revocation endpoint.
  */
-class IntrospectionRequestHandler extends BaseRequestHandler
+class RevocationRequestHandler extends BaseRequestHandler
 {
     private static $CHALLENGE = 'Basic realm="revocation"';
 

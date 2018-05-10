@@ -45,7 +45,7 @@ use Illuminate\Http\Response;
  * if the OP supports
  * [OpenID Connect Discovery 1.0](https://openid.net/specs/openid-connect-discovery-1_0.html).
  */
-class ConfigurationRequestHandler extends BaseRequestHandler
+class JwksRequestHandler extends BaseRequestHandler
 {
     /**
      * Handle a request to a JWK Set document endpoint.
