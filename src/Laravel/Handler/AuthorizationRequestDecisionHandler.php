@@ -1,0 +1,145 @@
+<?php
+//
+// Copyright (C) 2018 Authlete, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+// either express or implied. See the License for the specific
+// language governing permissions and limitations under the
+// License.
+//
+
+
+/**
+ * File containing the definition of AuthorizationRequestDecisionHandler class.
+ */
+
+
+namespace Authlete\Laravel\Handler;
+
+
+use Authlete\Api\AuthleteApiException;
+use Authlete\Dto\AuthorizationFailReason;
+use Authlete\Laravel\Handler\Spi\AuthorizationRequestDecisionHandlerSpi;
+use Authlete\Util\ValidationUtility;
+use Illuminate\Http\Response;
+
+
+/**
+ * Handler for end-user's decision on the authorization request.
+ *
+ * An authorization endpoint returns an authorization page (HTML) to an
+ * end-user, and the end-user will select either "authorize" or "deny" the
+ * authorization request. The `handle()` method handles the decision and calls
+ * Authlete's `/api/auth/authorization/issue` API or
+ * `/api/auth/authorization/fail` API.
+ */
+class AuthorizationRequestDecisionHandler extends AuthorizationRequestBaseHandler
+{
+    private $spi = null;  // \Authlete\Laravel\Handler\Spi\AuthorizationRequestDecisionHandlerSpi
+
+
+    /**
+     * Constructor.
+     *
+     * @param AuthleteApi $api
+     *     An implementation of the `AuthleteApi` interface.
+     *
+     * @param AuthorizationRequestDecisionHandlerSpi $spi
+     *     An implementation of the `AuthorizationRequestDecisionHandlerSpi`
+     *     interface.
+     */
+    public function __construct(AuthleteApi $api, AuthorizationRequestDecisionHandlerSpi $spi)
+    {
+        parent::__construct($api);
+
+        $this->spi = $spi;
+    }
+
+
+    /**
+     * Handle an end-user's decision on an authorization request.
+     *
+     * @param string $ticket
+     *     A ticket issued from Authlete's `/api/auth/authorization` API.
+     *
+     * @param string[] $claimNames
+     *     Names of requested claims. Use the value of the `claims` parameter
+     *     in a response from Authlete's `/api/auth/authorization` API.
+     *
+     * @param string[] $claimLocales
+     *     Requested claim locales. Use the value of the `claimsLocales`
+     *     parameter in a response from Authlete's `/api/auth/authorization`
+     *     API.
+     *
+     * @return Response
+     *     An HTTP response that should be returned to the user agent.
+     *
+     * @throws AuthleteApiException
+     */
+    public function handle(
+        $ticket, array $claimNames = null, array $claimLocales = null)
+    {
+        ValidationUtility::ensureString('$ticket', $ticket);
+        ValidationUtility::ensureNullOrArrayOfString('$claimNames', $claimNames);
+        ValidationUtility::ensureNullOrArrayOfString('$claimLocales', $claimLocales);
+
+        // If the end-user did not grant authorization to the client
+        // application.
+        if ($this->spi->isClientAuthorized() === false)
+        {
+            // The end-user denied the authorization request.
+            return $this->authorizationFail(
+                $ticket, AuthorizationFailReason::$DENIED);
+        }
+
+        // The subject (= unique identifier) of the end-user.
+        $subject = $this->spi->getUserSubject();
+
+        // If the subject of the end-user is not available.
+        if (is_null($subject) || empty($subject))
+        {
+            // The end-user is not authenticated.
+            return $this->authorizationFail(
+                $ticket, AuthorizationFailReason::$NOT_AUTHENTICATED);
+        }
+
+        // Get the value of the "sub" claim. This is optional. When $sub is
+        // null, the value of $subject will be used as the value of the "sub"
+        // claim.
+        $sub = $this->spi->getSub();
+
+        // The time when the end-user was authenticated.
+        $authTime = $this->spi->getUserAuthenticatedAt();
+
+        // The ACR (Authentication Context Class Reference) of the end-user
+        // authentication.
+        $acr = $this->spi->getAcr();
+
+        // Collect claim values.
+        $collector = new ClaimCollector($subject, $claimNames, $claimLocales, $this->spi);
+        $claims    = $collector->collect();
+
+        // Properties to be associated with an access token and/or an
+        // authorization code.
+        $properties = $this->spi->getProperties();
+
+        // Scopes associated with an access token and/or an authorization code.
+        // If a non-null value is returned from $this->spi->getScopes(), the
+        // scope set replaces the scopes that were given by the original
+        // authorization request.
+        $scopes = $this->spi->getScopes();
+
+        // Authorize the authorization request.
+        return $this->authorizationIssue(
+            $ticket, $subject, $authTime, $acr, $claims, $properties, $scopes, $sub);
+    }
+}
+?>
