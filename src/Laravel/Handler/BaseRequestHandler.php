@@ -26,7 +26,6 @@ namespace Authlete\Laravel\Handler;
 
 
 use Authlete\Api\AuthleteApi;
-use Authlete\Util\ValidationUtility;
 use Authlete\Web\ResponseUtility;
 use Illuminate\Http\Response;
 
@@ -49,8 +48,6 @@ class BaseRequestHandler
      */
     public function __construct(AuthleteApi $api)
     {
-        ValidationUtility::ensureNotNull('$api', $api);
-
         $this->api = $api;
     }
 
