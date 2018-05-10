@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Authlete\\Laravel\\": "src/"
+            "Authlete\\Laravel\\": "src/Laravel"
         }
     },
     "require-dev": {
