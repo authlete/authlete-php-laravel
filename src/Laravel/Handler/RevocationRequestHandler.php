@@ -31,6 +31,8 @@ use Authlete\Dto\RevocationRequest;
 use Authlete\Laravel\Web\ResponseUtility;
 use Authlete\Util\ValidationUtility;
 use Authlete\Web\BasicCredentials;
+use Authlete\Web\WebUtility;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 
@@ -47,14 +49,9 @@ class RevocationRequestHandler extends BaseRequestHandler
      *
      * This method calls Authlete's `/api/auth/revocation` API.
      *
-     * @param string $parameters
-     *     Request parameters of a revocation request which complies
-     *     with [RFC 7009](https://tools.ietf.org/html/rfc7009).
-     *
-     * @param string $authorization
-     *     The value of the `Authorization` header in the revocation request.
-     *     A client application may embed its pair of client ID and client
-     *     secret in a revocation request using Basic Authentication.
+     * @param Request $request
+     *     A revocation request which complies with
+     *     [RFC 7009](https://tools.ietf.org/html/rfc7009).
      *
      * @return Response
      *     An HTTP response that should be returned from the revocation
@@ -62,10 +59,13 @@ class RevocationRequestHandler extends BaseRequestHandler
      *
      * @throws AuthleteApiException
      */
-    public function handle($parameters, $authorization)
+    public function handle(Request $request)
     {
-        ValidationUtility::ensureNullOrString('$parameters',    $parameters);
-        ValidationUtility::ensureNullOrString('$authorization', $authorization);
+        // The value of the Authorization header.
+        $authorization = WebUtility::extractRequestHeaderValue($request, 'Authorization');
+
+        // The form parameters.
+        $parameters = http_build_query($request->all());
 
         // Convert the value of the Authorization header (credentials of the
         // client application), if any, into BasicCredentials.
