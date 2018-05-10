@@ -29,9 +29,9 @@ use Authlete\Api\AuthleteApiException;
 use Authlete\Dto\RevocationAction;
 use Authlete\Dto\RevocationRequest;
 use Authlete\Laravel\Web\ResponseUtility;
+use Authlete\Laravel\Web\WebUtility;
 use Authlete\Util\ValidationUtility;
 use Authlete\Web\BasicCredentials;
-use Authlete\Web\WebUtility;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
