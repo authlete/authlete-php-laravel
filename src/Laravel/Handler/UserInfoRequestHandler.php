@@ -33,6 +33,8 @@ use Authlete\Dto\UserInfoRequest;
 use Authlete\Dto\UserInfoResponse;
 use Authlete\Laravel\Handler\Spi\UserInfoRequestHandlerSpi;
 use Authlete\Laravel\Web\ResponseUtility;
+use Authlete\Laravel\Web\WebUtility;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 
@@ -78,9 +80,8 @@ class UserInfoRequestHandler extends BaseRequestHandler
      * This method calls Authlete's `/api/auth/userinfo` API and conditionally
      * `/api/auth/userinfo/issue` API.
      *
-     * @param string $accessToken
-     *     An access token that the client application presented at the userinfo
-     *     endpoint.
+     * @param Request request
+     *     A userinfo request.
      *
      * @return Response
      *     An HTTP response that should be returned from the userinfo endpoint
@@ -88,9 +89,10 @@ class UserInfoRequestHandler extends BaseRequestHandler
      *
      * @throws AuthleteApiException
      */
-    public function handle($accessToken)
+    public function handle(Request $request)
     {
-        ValidationUtility::ensureNullOrString('$accessToken', $accessToken);
+        // Extract the access token from the request.
+        $accessToken = WebUtility::extractAccessToken($request);
 
         if (is_null($accessToken))
         {
