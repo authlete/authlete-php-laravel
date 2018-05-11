@@ -75,5 +75,93 @@ class WebUtility
         // The first element of the array.
         return $value[0];
     }
+
+
+    /**
+     * Extract an access token which is included in a request in the way
+     * defined in RFC 6750.
+     *
+     * The implementation of this method searches the following locations
+     * in this order.
+     *
+     * * [2.1. Authorization Request Header Field](https://tools.ietf.org/html/rfc6750#section-2.1)
+     * * [2.2. Form-Encoded Body Parameter](https://tools.ietf.org/html/rfc6750#section-2.2)
+     * * [2.3. URI Query Parameter](https://tools.ietf.org/html/rfc6750#section-2.3)
+     *
+     * @param Request $request
+     *     An HTTP request.
+     *
+     * @return string
+     *     An access token.
+     */
+    public static function extractAccessToken(Request $request)
+    {
+        // 1. RFC 6750, 2.1. Authorization Request Header Field
+        $accessToken = extractAccessTokenFromHeader($request);
+        if (is_null($accessToken) === false)
+        {
+            return $accessToken;
+        }
+
+        // 2. RFC 6750, 2.2. Form-Encoded Body Parameter
+        $accessToken = extractAccessTokenFromBody($request);
+        if (is_null($accessToken) === false)
+        {
+            return $accessToken;
+        }
+
+        // 3. RFC 6750, 2.3. URI Query Parameter
+        $accessToken = extractAccessTokenFromQuery($request);
+
+        return $accessToken;
+    }
+
+
+    /**
+     * Extract an access token which is included in a request in the way
+     * defined in "2.1. Authorization Request Header Field" of RFC 6750.
+     *
+     * @param Request $request
+     *     An HTTP request.
+     *
+     * @return string
+     *     An access token.
+     */
+    public static function extractAccessTokenFromHeader(Request $request)
+    {
+        return $request->bearerToken();
+    }
+
+
+    /**
+     * Extract an access token which is included in a request in the way
+     * defined in "2.2. Form-Encoded Body Parameter" of RFC 6750.
+     *
+     * @param Request $request
+     *     An HTTP request.
+     *
+     * @return string
+     *     An access token.
+     */
+    public static function extractAccessTokenFromBody(Request $request)
+    {
+        return $request->input('access_token');
+    }
+
+
+    /**
+     * Extract an access token which is included in a request in the way
+     * defined in "2.3. URI Query Parameter" of RFC 6750.
+     *
+     * @param Request $request
+     *     An HTTP request.
+     *
+     * @return string
+     *     An access token.
+     */
+    public static function extractAccessTokenFromQuery(Request $request)
+    {
+        return $request->query('access_token');
+    }
 }
 ?>
