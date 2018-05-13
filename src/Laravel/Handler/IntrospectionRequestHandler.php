@@ -30,6 +30,7 @@ use Authlete\Dto\StandardIntrospectionAction;
 use Authlete\Dto\StandardIntrospectionRequest;
 use Authlete\Laravel\Web\ResponseUtility;
 use Authlete\Util\ValidationUtility;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 
@@ -43,9 +44,9 @@ class IntrospectionRequestHandler extends BaseRequestHandler
      *
      * This method calls Authlete's `/api/auth/introspection/standard` API.
      *
-     * @param string $parameters
-     *     Request parameters of an introspection request which complies
-     *     with [RFC 7662](https://tools.ietf.org/html/rfc7662).
+     * @param Request $request
+     *     An introspection request which complies with
+     *     [RFC 7662](https://tools.ietf.org/html/rfc7662).
      *
      * @return Response
      *     An HTTP response that should be returned from the introspection
@@ -53,9 +54,10 @@ class IntrospectionRequestHandler extends BaseRequestHandler
      *
      * @throws AuthleteApiException
      */
-    public function handle($parameters)
+    public function handle(Request $request)
     {
-        ValidationUtility::ensureNullOrString('$parameters', $parameters);
+        // The form parameters.
+        $parameters = http_build_query($request->input());
 
         // Call Authlete's /api/auth/introspection/standard API.
         $response = $this->callStandardIntrospectionApi($parameters);
