@@ -29,7 +29,6 @@ use Authlete\Api\AuthleteApiException;
 use Authlete\Dto\StandardIntrospectionAction;
 use Authlete\Dto\StandardIntrospectionRequest;
 use Authlete\Laravel\Web\ResponseUtility;
-use Authlete\Util\ValidationUtility;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
