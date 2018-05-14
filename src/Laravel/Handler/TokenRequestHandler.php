@@ -36,8 +36,8 @@ use Authlete\Dto\TokenRequest;
 use Authlete\Dto\TokenResponse;
 use Authlete\Laravel\Handler\Spi\TokenRequestHandlerSpi;
 use Authlete\Laravel\Web\ResponseUtility;
-use Authlete\Util\ValidationUtility;
 use Authlete\Web\BasicCredentials;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 
@@ -79,14 +79,8 @@ class TokenRequestHandler extends BaseRequestHandler
      * This method calls Authlete's `/api/auth/token` API and optionally
      * `/api/auth/token/issue` API or `/api/auth/token/fail` API.
      *
-     * @param string $parameters
-     *     Form parameters of the token request in
-     *     `application/x-wwww-form-urlencoded` format.
-     *
-     * @param string $authorization
-     *     The value of the `Authorization` header in the token request.
-     *     A client application may embed its pair of client ID and client
-     *     secret in a token request using Basic Authentication.
+     * @param Request $request
+     *     A token request.
      *
      * @return Response
      *     An HTTP response that should be returned from the token endpoint
@@ -94,10 +88,13 @@ class TokenRequestHandler extends BaseRequestHandler
      *
      * @throws AuthleteApiException
      */
-    public function handle($parameters, $authorization)
+    public function handle(Request $request)
     {
-        ValidationUtility::ensureNullOrString('$parameters',    $parameters);
-        ValidationUtility::ensureNullOrString('$authorization', $authorization);
+        // The value of the Authorization header.
+        $authorization = WebUtility::extractRequestHeaderValue($request, 'Authorization');
+
+        // The form parameters.
+        $parameters = http_build_query($request->input());
 
         // Convert the value of the Authorization header (credentials of the
         // client application), if any, into BasicCredentials.
