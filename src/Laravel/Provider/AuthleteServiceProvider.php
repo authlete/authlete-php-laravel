@@ -28,6 +28,7 @@ namespace Authlete\Laravel\Provider;
 use Authlete\Api\AuthleteApi;
 use Authlete\Api\AuthleteApiImpl;
 use Authlete\Laravel\Conf\AuthleteLaravelConfiguration;
+use Authlete\Laravel\Console\AuthleteCommand;
 use Illuminate\Support\ServiceProvider;
 
 
@@ -88,16 +89,17 @@ class AuthleteServiceProvider extends ServiceProvider
 
 
     /**
-     * Publish 'authlete.php' when 'php artisan vendor:publish' is executed.
+     * Register a command for "php artisan authlete".
      */
     public function boot()
     {
-        // 'authlete.php', a configuration file which holds parameters to
-        // access Authlete APIs. AuthleteLaravelConfiguration class refers
-        // to the configuration file.
-        $this->publishes([
-            __DIR__ . '/../../../config/authlete.php' => config_path('authlete.php')
-        ]);
+        if ($this->app->runningInConsole())
+        {
+            // Register a command for "php artisan authlete".
+            $this->commands([
+                AuthleteCommand::class
+            ]);
+        }
     }
 }
 ?>
