@@ -26,6 +26,7 @@ namespace Authlete\Laravel\Console;
 
 
 use Illuminate\Console\Command;
+use Illuminate\Console\DetectsApplicationNamespace;
 
 
 /**
@@ -33,6 +34,9 @@ use Illuminate\Console\Command;
  */
 class AuthleteCommand extends Command
 {
+    use DetectsApplicationNamespace;
+
+
     /**
      * The name and signature of the console comand.
      *
@@ -50,33 +54,64 @@ class AuthleteCommand extends Command
 
 
     /**
+     * The directory that holds resources.
+     */
+    private $rsc = __DIR__ . '/../../../rsc';
+
+
+    /**
      * Execute the console command.
      */
     public function handle()
     {
-        // The directory that holds resources.
-        $rsc = __DIR__ . '/../../../rsc/';
-
         // Copy 'authlete.php' to 'config/authlete.php'.
-        //
-        // This is a configuration file which holds parameters to access
-        // Authlete APIs. AuthleteLaravelConfiguration class refers to
-        // the configuration file.
-        copy($rsc . 'authlete.php', config_path('authlete.php'));
+        $this->copyToConfig('authlete.php');
 
         // Append the content of 'routes-web.php' to 'routes/web.php'.
-        file_put_contents(
-            base_path('routes/web.php'),
-            file_get_contents($rsc . 'routes-web.php'),
-            FILE_APPEND
-        );
+        $this->appendToBase('routes-web.php', 'routes/web.php');
 
         // Append the content of 'routes-api.php' to 'routes/api.php'.
-        file_put_contents(
-            base_path('routes/api.php'),
-            file_get_contents($rsc . 'routes-api.php'),
-            FILE_APPEND
-        );
+        $this->appendToBase('routes-api.php', 'routes/api.php');
+
+        // Copy controllers with the namespace replaced.
+        $this->relocateController('TokenController.php');
+    }
+
+
+    private function copyToConfig($source)
+    {
+        copy("${rsc}/${source}", config_path($source));
+    }
+
+
+    private function appendToBase($source, $target)
+    {
+        $this->append("${rsc}/${source}", base_path($target));
+    }
+
+
+    private function append($source, $target)
+    {
+        file_put_contents($target, file_get_contents($source), FILE_APPEND);
+    }
+
+
+    private function relocateController($controller)
+    {
+        $this->relocate(
+            "${rsc}/${controller}",
+            app_path("Http/Controllers/Authlete/${controller}"),
+            $this->getAppNamespace() . 'Http\Controllers\Authlete');
+    }
+
+
+    private function relocate($source, $target, $namespace)
+    {
+        // The content written into $target.
+        $content = str_replace('_NAMESPACE_', $namespace, file_get_contents($source));
+
+        // Write $content to $target.
+        file_put_contents($target, $content);
     }
 }
 ?>
