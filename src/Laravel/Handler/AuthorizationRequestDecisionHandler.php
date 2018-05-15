@@ -25,6 +25,7 @@
 namespace Authlete\Laravel\Handler;
 
 
+use Authlete\Api\AuthleteApi;
 use Authlete\Api\AuthleteApiException;
 use Authlete\Dto\AuthorizationFailReason;
 use Authlete\Laravel\Handler\Spi\AuthorizationRequestDecisionHandlerSpi;
