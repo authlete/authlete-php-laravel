@@ -56,7 +56,7 @@ class AuthleteCommand extends Command
     /**
      * The directory that holds resources.
      */
-    private $rsc = __DIR__ . '/../../../rsc';
+    private static $rsc = __DIR__ . '/../../../rsc/';
 
 
     /**
@@ -84,13 +84,13 @@ class AuthleteCommand extends Command
 
     private function copyToConfig($source)
     {
-        copy("${rsc}/${source}", config_path($source));
+        copy(self::$rsc . $source, config_path($source));
     }
 
 
     private function appendToBase($source, $target)
     {
-        $this->append("${rsc}/${source}", base_path($target));
+        $this->append(self::$rsc . $source, base_path($target));
     }
 
 
@@ -112,7 +112,7 @@ class AuthleteCommand extends Command
     private function relocateController($controller)
     {
         $this->relocate(
-            "${rsc}/${controller}",
+            self::$rsc . $controller,
             app_path("Http/Controllers/Authlete/${controller}"),
             $this->getAppNamespace() . 'Http\Controllers\Authlete');
     }
