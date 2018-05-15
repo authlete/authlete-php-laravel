@@ -37,6 +37,7 @@ use Authlete\Dto\TokenRequest;
 use Authlete\Dto\TokenResponse;
 use Authlete\Laravel\Handler\Spi\TokenRequestHandlerSpi;
 use Authlete\Laravel\Web\ResponseUtility;
+use Authlete\Laravel\Web\WebUtility;
 use Authlete\Web\BasicCredentials;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
