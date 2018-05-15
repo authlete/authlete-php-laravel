@@ -132,7 +132,7 @@ class AuthleteCommand extends Command
     {
         $namespace = $this->getAppNamespace() . 'Http\Controllers\Authlete';
 
-        $line = "Route::${method}('${path}', '${namespace}\\${controller}');\n";
+        $line = "Route::${method}('${path}', '\\${namespace}\\${controller}');\n";
 
         file_put_contents(base_path('routes/api.php'), $line, FILE_APPEND);
     }
