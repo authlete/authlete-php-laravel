@@ -74,7 +74,11 @@ class AuthleteCommand extends Command
         $this->appendToBase('routes-api.php', 'routes/api.php');
 
         // Copy controllers with the namespace replaced.
+        $this->createDirectory(app_path('Http/Controllers/Authlete'));
         $this->relocateController('TokenController.php');
+
+        // Add routes to 'routes/api.php'.
+        $this->addApiRoute('post', '/token', 'TokenController');
     }
 
 
@@ -96,6 +100,15 @@ class AuthleteCommand extends Command
     }
 
 
+    private function createDirectory($path)
+    {
+        if (is_dir($path) === false)
+        {
+            mkdir($path, 0755, true);
+        }
+    }
+
+
     private function relocateController($controller)
     {
         $this->relocate(
@@ -112,6 +125,16 @@ class AuthleteCommand extends Command
 
         // Write $content to $target.
         file_put_contents($target, $content);
+    }
+
+
+    private function addApiRoute($method, $path, $controller)
+    {
+        $namespace = $this->getAppNamespace() . 'Http\Controllers\Authlete';
+
+        $line = "Route::${method}('${path}', '${namespace}\\${controller}');\n";
+
+        file_put_contents(base_path('routes/api.php'), $line, FILE_APPEND);
     }
 }
 ?>
