@@ -26,6 +26,7 @@ namespace Authlete\Laravel\Handler\Spi;
 
 
 use App\User;
+use Authlete\Util\LanguageUtility;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -67,8 +68,11 @@ class DefaultTokenRequestHandlerSpi extends TokenRequestHandlerSpiAdapter
         // The user who has the $username as the identifier.
         $user = User::where($field, $username)->first();
 
-        // Return the subject (unique identifier) of the user.
-        return $user->getAuthIdentifier();
+        // The subject (unique identifier) of the user.
+        $subject = $user->getAuthIdentifier();
+
+        // Convert $subject to a string as necessary.
+        return LanguageUtility::toString($subject);
     }
 }
 ?>
