@@ -54,7 +54,8 @@ class DefaultTokenController extends Controller
     public function __invoke(AuthleteApi $api, Request $request)
     {
         // Create a handler for the token request.
-        $handler = new TokenRequestHandler($api, $this->getSpi());
+        $spi     = $this->getTokenRequestHandlerSpi($request);
+        $handler = new TokenRequestHandler($api, $spi);
 
         // Handle the token request.
         return $handler->handle($request);
@@ -67,10 +68,13 @@ class DefaultTokenController extends Controller
      * The default implementation of this method returns an instance of
      * `DefaultTokenRequestHandlerSpi`.
      *
+     * @param Request $request
+     *     A token request.
+     *
      * @return TokenRequestHandlerSpi
      *     An implementation of the `TokenRequestHandlerSpi` interface.
      */
-    protected function getSpi()
+    protected function getTokenRequestHandlerSpi(Request $request)
     {
         return new DefaultTokenRequestHandlerSpi();
     }
