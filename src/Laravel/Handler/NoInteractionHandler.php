@@ -31,6 +31,7 @@ use Authlete\Dto\AuthorizationAction;
 use Authlete\Dto\AuthorizationFailReason;
 use Authlete\Dto\AuthorizationResponse;
 use Authlete\Laravel\Handler\Spi\NoInteractionHandlerSpi;
+use Authlete\Util\MaxAgeValidator;
 use Illuminate\Http\Response;
 
 
@@ -177,73 +178,10 @@ class NoInteractionHandler extends AuthorizationRequestBaseHandler
 
     private function checkMaxAge(AuthorizationResponse $response, $authTime)
     {
-        // Get the requested maximum authentication age.
-        $maxAge = $response->getMaxAge();
-
-        // If no maximum authentication age is requested.
-        if (empty($maxAge))
-        {
-            // No need to care about the maximum authentication age.
-            return true;
-        }
-
-        if (PHP_INT_SIZE <= 4 ||
-            is_integer($authTime) === false || is_integer($maxAge) === false)
-        {
-            // $authTime and $maxAge may be strings.
-            return $this->checkMaxAgeAsStrings($authTime, $maxAge);
-        }
-        else
-        {
-            return $this->checkMaxAgeAsIntegers($authTime, $maxAge);
-        }
-    }
-
-
-    private function checkMaxAgeAsStrings($authTime, $maxAge)
-    {
-        // Note that behaviors of GMP functions in PHP 5.6+ are slightly
-        // different from those in older PHP versions.
-
-        // If the PHP runtime does not have GMP extension, the following
-        // code will throw an exception.
-
-        // Calculate the expiration time in seconds.
-        $gmpAuthTime  = gmp_init($authTime);
-        $gmpMaxAge    = gmp_init($maxAge);
-        $gmpExpiresAt = gmp_add($gmpAuthTime, $gmpMaxAge);
-
-        // The current time in seconds since the Unix epoch.
-        $current    = time();
-        $gmpCurrent = gmp_init($current);
-
-        if (gmp_cmp($gmpCurrent, $gmpExpiresAt) < 0)
-        {
-            // The max age has not been reached.
-            return true;
-        }
-
-        // The max age has been reached.
-        return false;
-    }
-
-
-    private function checkMaxAgeAsIntegers($authTime, $maxAge)
-    {
-        // Calculate the expiration time in seconds.
-        $expiresAt = $authTime + $maxAge;
-
-        // The current time in seconds since the Unix epoch.
-        $current = time();
-
-        if ($current < $expiresAt)
-        {
-            // The max age has not been reached.
-            return true;
-        }
-
-        // The max age has been reached.
-        return false;
+        return (new MaxAgeValidator())
+            ->setMaxAge($response->getMaxAge())
+            ->setAuthenticationTime($authTime)
+            ->validate();
     }
 
 
