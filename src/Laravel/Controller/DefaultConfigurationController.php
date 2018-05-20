@@ -25,9 +25,9 @@
 namespace Authlete\Laravel\Controller;
 
 
+use App\Http\Controllers\Controller;
 use Authlete\Api\AuthleteApi;
 use Authlete\Laravel\Handler\ConfigurationRequestHandler;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 
 
