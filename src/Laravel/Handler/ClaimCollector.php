@@ -163,7 +163,7 @@ class ClaimCollector
             }
 
             // Get the claim value of the claim.
-            $value = getClaimValue($name, $tag);
+            $value = $this->getClaimValue($name, $tag);
 
             // If the claim value was not obtained.
             if (is_null($value))
@@ -200,7 +200,7 @@ class ClaimCollector
         }
 
         // If claim locales are not specified by the 'claims_locales' request parameter.
-        if (is_null($this->claimsLocales))
+        if (is_null($this->claimLocales))
         {
             // Get the claim value of the claim without any language tag.
             return $this->getUserClaimValue($claimName, null);
