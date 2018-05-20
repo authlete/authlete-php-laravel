@@ -18,7 +18,7 @@
 
 
 /**
- * File containing the definition of ConfigurationController class.
+ * File containing the definition of DefaultConfigurationController class.
  */
 
 
@@ -63,7 +63,7 @@ use Illuminate\Http\Response;
  * Note that the default value of Issuer Identifier is not appropriate for
  * production use, so you should change it.
  */
-class ConfigurationController extends Controller
+class DefaultConfigurationController extends Controller
 {
     /**
      * The entry point of this controller.
