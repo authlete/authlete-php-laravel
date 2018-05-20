@@ -28,6 +28,7 @@ namespace Authlete\Laravel\Controller;
 use App\User;
 use App\Http\Controllers\Controller;
 use Authlete\Api\AuthleteApi;
+use Authlete\Dto\AuthorizationAction;
 use Authlete\Dto\AuthorizationRequest;
 use Authlete\Dto\AuthorizationResponse;
 use Authlete\Laravel\Handler\AuthorizationRequestErrorHandler;
@@ -124,7 +125,7 @@ class DefaultAuthorizationController extends Controller
         AuthleteApi $api, Request $request, AuthorizationResponse $response)
     {
         // Handle the error.
-        return (new AuthorizationRequestErrorHandler())->handle($response);
+        return (new AuthorizationRequestErrorHandler($api))->handle($response);
     }
 
 
@@ -242,7 +243,7 @@ class DefaultAuthorizationController extends Controller
         $data = $this->prepareData($request, $response);
 
         // Return the authorization page.
-        $this->getAuthorizationPage($data);
+        return $this->getAuthorizationPage($data);
     }
 
 
@@ -364,8 +365,14 @@ class DefaultAuthorizationController extends Controller
         // The required maximum authentication age.
         $maxAge = $response->getMaxAge();
 
+        if (empty($maxAge))
+        {
+            // Don't have to care about the maximum authentication age.
+            return false;
+        }
+
         // The time at which the user was authenticated.
-        $authenticatedAt = $this->getUserAuthenticatedAt($request, $user);
+        $authenticatedAt = $this->getUserAuthenticatedAt($user, $request);
 
         $validator = (new MaxAgeValidator())
             ->setMaxAge($maxAge)
