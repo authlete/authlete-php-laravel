@@ -92,18 +92,8 @@ class TokenRequestHandler extends BaseRequestHandler
      */
     public function handle(Request $request)
     {
-        // The value of the Authorization header.
-        $authorization = WebUtility::extractRequestHeaderValue($request, 'Authorization');
-
-        // The form parameters.
-        $parameters = http_build_query($request->input());
-
-        // Convert the value of the Authorization header (credentials of the
-        // client application), if any, into BasicCredentials.
-        $credentials = BasicCredentials::parse($authorization);
-
         // Call Authlete's /api/auth/token API.
-        $response = $this->callTokenApi($parameters, $credentials);
+        $response = $this->callTokenApi($request);
 
         // 'action' in the response denotes the next action which the
         // implementation of userinfo endpoint should take.
@@ -144,8 +134,18 @@ class TokenRequestHandler extends BaseRequestHandler
     }
 
 
-    private function callTokenApi($parameters, BasicCredentials $credentials)
+    private function callTokenApi(Request $request)
     {
+        // The value of the Authorization header.
+        $authorization = WebUtility::extractRequestHeaderValue($request, 'Authorization');
+
+        // The form parameters.
+        $parameters = http_build_query($request->input());
+
+        // Convert the value of the Authorization header (credentials of the
+        // client application), if any, into BasicCredentials.
+        $credentials = BasicCredentials::parse($authorization);
+
         if (is_null($parameters))
         {
             // Authlete returns different error codes for null and an empty
@@ -158,7 +158,7 @@ class TokenRequestHandler extends BaseRequestHandler
         $clientSecret = is_null($credentials) ? null : $credentials->getPassword();
 
         // Prepare a request for Authlete's /api/auth/token API.
-        $request = (new TokenRequest())
+        $req = (new TokenRequest())
             ->setParameters($parameters)
             ->setClientId($clientId)
             ->setClientSecret($clientSecret)
@@ -166,7 +166,7 @@ class TokenRequestHandler extends BaseRequestHandler
             ;
 
         // Call Authlete's /api/auth/token API.
-        return $this->getApi()->token($request);
+        return $this->getApi()->token($req);
     }
 
 
