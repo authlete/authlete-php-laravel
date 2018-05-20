@@ -1,0 +1,98 @@
+<?php
+//
+// Copyright (C) 2018 Authlete, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+// either express or implied. See the License for the specific
+// language governing permissions and limitations under the
+// License.
+//
+
+
+/**
+ * File containing the definition of UserUtility class.
+ */
+
+
+namespace Authlete\Laravel\Util;
+
+
+use App\User;
+use Authlete\Util\LanguageUtility;
+use Illuminate\Support\Facades\Auth;
+
+
+
+/**
+ * User utility.
+ */
+class UserUtility
+{
+    /**
+     * Find a user.
+     *
+     * @param string $username
+     *     The username of the user.
+     *
+     * @param string $password
+     *     The password of the user.
+     *
+     * @param string $field
+     *     The name of the database column for unique user identifiers.
+     *     The default value is `'email'`.
+     *
+     * @return User
+     *     The user. If not found, `null` is returned.
+     */
+    public static function findUser($username, $password, $field = 'email')
+    {
+        // Credentials used for user authentication.
+        $credentials = array(
+            $field     => $username,
+            'password' => $password
+        );
+
+        // If the credentials are not valid.
+        if (Auth::validate($credentials) === false)
+        {
+            // No user has the credentials.
+            return null;
+        }
+
+        // The user who has the $username as the identifier.
+        return User::where($field, $username)->first();
+    }
+
+
+    /**
+     * Get the subject of a user.
+     *
+     * @param User $user
+     *     The user.
+     *
+     * @return string
+     *     The subject (= unique identifier) of the user.
+     */
+    public static function getUserSubject(User $user = null)
+    {
+        if (is_null($user))
+        {
+            return null;
+        }
+
+        // The subject (unique identifier) of the user.
+        $subject = $user->getAuthIdentifier();
+
+        // Convert $subject to a string as necessary.
+        return LanguageUtility::toString($subject);
+    }
+}
+?>
