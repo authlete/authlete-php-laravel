@@ -40,8 +40,8 @@ interface UserClaimProvider
      * `json_encode()`. In most cases, a string, a boolean value or an
      * integer should be returned. When `$claimName` is `"address"`, an
      * array which conforms to the format defined in
-     * [5.1.1. Address Claim](http://openid.net/specs/openid-connect-core-1_0.html#AddressClaim)
-     * of [OpenID Connect Core 1.0](http://openid.net/specs/openid-connect-core-1_0.html)
+     * [5.1.1. Address Claim](https://openid.net/specs/openid-connect-core-1_0.html#AddressClaim)
+     * of [OpenID Connect Core 1.0](https://openid.net/specs/openid-connect-core-1_0.html)
      * should be returned. For example,
      *
      * ```
