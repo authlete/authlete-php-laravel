@@ -25,9 +25,6 @@
 namespace Authlete\Laravel\Handler\Spi;
 
 
-use Authlete\Laravel\Handler\Spi\UserClaimProvider;
-
-
 /**
  * An empty implementation of the UserClaimProvider interface.
  *
