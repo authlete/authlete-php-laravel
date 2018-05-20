@@ -25,16 +25,14 @@
 namespace Authlete\Laravel\Handler\Spi;
 
 
-use App\User;
-use Authlete\Util\LanguageUtility;
-use Illuminate\Support\Facades\Auth;
+use Authlete\Laravel\Util\UserUtility;
 
 
 /**
- * An implementation of TokenRequestHandlerSpi that uses Laravel's
- * standard authentication mechanism.
+ * An implementation of the TokenRequestHandlerSpi interface
+ * that uses Laravel's standard authentication mechanism.
  */
-class DefaultTokenRequestHandlerSpi extends TokenRequestHandlerSpiAdapter
+class DefaultTokenRequestHandlerSpi implements TokenRequestHandlerSpi
 {
     /**
      * {@inheritdoc}
@@ -50,29 +48,39 @@ class DefaultTokenRequestHandlerSpi extends TokenRequestHandlerSpiAdapter
     public function authenticateUser($username, $password)
     {
         // The database column for unique user identifiers.
-        $field = 'email';
+        $field = $this->username();
 
-        // Credentials used for user authentication.
-        $credentials = array(
-            $field     => $username,
-            'password' => $password
-        );
+        // Look up the user who has the credentials.
+        $user = UserUtility::findUser($username, $password, $field);
 
-        // If the credentials are not valid.
-        if (Auth::validate($credentials) === false)
-        {
-            // No user has the credentials.
-            return null;
-        }
+        // Return the subject (= unique identifier) of the user.
+        // When $user is null, getUserSubject() returns null.
+        return UserUtility::getUserSubject($user);
+    }
 
-        // The user who has the $username as the identifier.
-        $user = User::where($field, $username)->first();
 
-        // The subject (unique identifier) of the user.
-        $subject = $user->getAuthIdentifier();
+    /**
+     * Get the database column for unique user identifiers.
+     *
+     * The default implementation of this method returns `'email'`.
+     *
+     * @return string
+     *     The detabase column for unique user identifiers.
+     */
+    protected function username()
+    {
+        return 'email';
+    }
 
-        // Convert $subject to a string as necessary.
-        return LanguageUtility::toString($subject);
+
+    /**
+     * {@inheritdoc}
+     *
+     * {@inheritdoc}
+     */
+    public function getProperties()
+    {
+        return null;
     }
 }
 ?>
