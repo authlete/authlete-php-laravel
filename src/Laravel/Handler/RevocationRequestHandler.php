@@ -61,18 +61,8 @@ class RevocationRequestHandler extends BaseRequestHandler
      */
     public function handle(Request $request)
     {
-        // The value of the Authorization header.
-        $authorization = WebUtility::extractRequestHeaderValue($request, 'Authorization');
-
-        // The form parameters.
-        $parameters = http_build_query($request->all());
-
-        // Convert the value of the Authorization header (credentials of the
-        // client application), if any, into BasicCredentials.
-        $credentials = BasicCredentials::parse($authorization);
-
         // Call Authlete's /api/auth/revocation API.
-        $response = $this->callRevocationApi($parameters, $credentials);
+        $response = $this->callRevocationApi($request);
 
         // 'action' in the response denotes the next action which the
         // implementation of revocation endpoint should take.
@@ -108,8 +98,18 @@ class RevocationRequestHandler extends BaseRequestHandler
     }
 
 
-    private function callRevocationApi($parameters, $credentials)
+    private function callRevocationApi(Request $request)
     {
+        // The value of the Authorization header.
+        $authorization = WebUtility::extractRequestHeaderValue($request, 'Authorization');
+
+        // The form parameters.
+        $parameters = http_build_query($request->input());
+
+        // Convert the value of the Authorization header (credentials of the
+        // client application), if any, into BasicCredentials.
+        $credentials = BasicCredentials::parse($authorization);
+
         if (is_null($parameters))
         {
             // Authlete returns different error codes for null and an empty
@@ -122,14 +122,14 @@ class RevocationRequestHandler extends BaseRequestHandler
         $clientSecret = is_null($credentials) ? null : $credentials->getPassword();
 
         // Create a request for Authlete's /api/auth/revocation API.
-        $request = (new RevocationRequest())
+        $req = (new RevocationRequest())
             ->setParameters($parameters)
             ->setClientId($clientId)
             ->setClientSecret($clientSecret)
             ;
 
         // Call Authlete's /api/auth/revocation API.
-        return $this->getApi()->revocation($request);
+        return $this->getApi()->revocation($req);
     }
 }
 ?>
