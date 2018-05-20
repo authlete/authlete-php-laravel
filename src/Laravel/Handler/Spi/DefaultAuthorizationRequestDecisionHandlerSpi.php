@@ -25,6 +25,7 @@
 namespace Authlete\Laravel\Handler\Spi;
 
 
+use App\User;
 use Authlete\Util\ValidationUtility;
 
 
