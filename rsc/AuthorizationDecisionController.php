@@ -29,7 +29,7 @@ class AuthorizationDecisionController extends DefaultAuthorizationDecisionContro
         // returns 0. However, this method must be implemented properly
         // to support the `auth_time` claim. See OpenID Connect Core 1.0
         // for details.
-        return 0;
+        return parent::getUserAuthenticatedAt($user, $request);
     }
 }
 ?>
