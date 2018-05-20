@@ -55,11 +55,8 @@ class IntrospectionRequestHandler extends BaseRequestHandler
      */
     public function handle(Request $request)
     {
-        // The form parameters.
-        $parameters = http_build_query($request->input());
-
         // Call Authlete's /api/auth/introspection/standard API.
-        $response = $this->callStandardIntrospectionApi($parameters);
+        $response = $this->callStandardIntrospectionApi($request);
 
         // 'action' in the response denotes the next action which the
         // implementation of introspection endpoint should take.
@@ -91,8 +88,11 @@ class IntrospectionRequestHandler extends BaseRequestHandler
     }
 
 
-    private function callStandardIntrospectionApi($parameters)
+    private function callStandardIntrospectionApi(Request $request)
     {
+        // The form parameters.
+        $parameters = http_build_query($request->input());
+
         if (is_null($parameters))
         {
             // Authlete returns different error codes for null and an empty
@@ -102,10 +102,10 @@ class IntrospectionRequestHandler extends BaseRequestHandler
         }
 
         // Create a request for Authlete's /api/auth/introspection/standard API.
-        $request = (new StandardIntrospectionRequest())->setParameters($parameters);
+        $req = (new StandardIntrospectionRequest())->setParameters($parameters);
 
         // Call Authlete's /api/auth/introspection/standard API.
-        return $this->getApi()->standardIntrospection($request);
+        return $this->getApi()->standardIntrospection($req);
     }
 }
 ?>
