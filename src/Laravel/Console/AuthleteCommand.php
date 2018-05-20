@@ -64,39 +64,36 @@ class AuthleteCommand extends Command
      */
     public function handle()
     {
-        // Copy 'authlete.php' to 'config/authlete.php'.
-        $this->copyToConfig('authlete.php');
+        // Create directories as necessary.
+        $this->createDirectory($this->getControllerDirectory());
+        $this->createDirectory($this->getViewDirectory());
+        $this->createDirectory($this->getCssDirectory());
 
-        // Append the content of 'routes-web.php' to 'routes/web.php'.
-        $this->appendToBase('routes-web.php', 'routes/web.php');
-
-        // Append the content of 'routes-api.php' to 'routes/api.php'.
-        $this->appendToBase('routes-api.php', 'routes/api.php');
+        // Copy files.
+        $this->copyResourceFile('authlete.php', config_path());
+        $this->copyResourceFile('authorization.blade.php', $this->getViewDirectory());
+        $this->copyResourceFile('authorization.css', $this->getCssDirectory());
 
         // Copy controllers with the namespace replaced.
-        $this->createDirectory(app_path('Http/Controllers/Authlete'));
+        $this->relocateController('AuthorizationController.php');
+        $this->relocateController('AuthorizationDecisionController.php');
+        $this->relocateController('ConfigurationController.php');
+        $this->relocateController('JwksController.php');
+        $this->relocateController('RevocationController.php');
         $this->relocateController('TokenController.php');
 
+        // Add routes to 'routes/web.php'.
+        $this->appendContent("\n// Routes added by AuthleteCommand.\n", base_path('routes/web.php'));
+        $this->addWebRoute('get',  '/.well-known/openid-configuration', 'ConfigurationController');
+        $this->addWebRoute('get',  '/authorization', 'AuthorizationController');
+        $this->addWebRoute('post', '/authorization', 'AuthorizationController');
+        $this->addWebRoute('post', '/authorization/decision', 'AuthorizationDecisionController');
+
         // Add routes to 'routes/api.php'.
+        $this->appendContent("\n// Routes added by AuthleteCommand.\n", base_path('routes/api.php'));
+        $this->addApiRoute('get',  '/jwks', 'JwksController');
+        $this->addApiRoute('post', '/revocation', 'RevocationController');
         $this->addApiRoute('post', '/token', 'TokenController');
-    }
-
-
-    private function copyToConfig($source)
-    {
-        copy(self::$rsc . $source, config_path($source));
-    }
-
-
-    private function appendToBase($source, $target)
-    {
-        $this->append(self::$rsc . $source, base_path($target));
-    }
-
-
-    private function append($source, $target)
-    {
-        file_put_contents($target, file_get_contents($source), FILE_APPEND);
     }
 
 
@@ -109,32 +106,82 @@ class AuthleteCommand extends Command
     }
 
 
+    private function getControllerDirectory()
+    {
+        return app_path('Http/Controllers/Authlete/');
+    }
+
+
+    private function getViewDirectory()
+    {
+        return resource_path('views/authlete/');
+    }
+
+
+    private function getCssDirectory()
+    {
+        return public_path('css/authlete/');
+    }
+
+
+    private function getControllerNamespace()
+    {
+        return $this->getAppNamespace() . 'Http\Controllers\Authlete';
+    }
+
+
+    private function copyResourceFile($resourceFile, $targetDirectory)
+    {
+        $source = self::$rsc       . $resourceFile;
+        $target = $targetDirectory . $resourceFile;
+
+        copy($source, $target);
+    }
+
+
     private function relocateController($controller)
     {
         $this->relocate(
             self::$rsc . $controller,
-            app_path("Http/Controllers/Authlete/${controller}"),
-            $this->getAppNamespace() . 'Http\Controllers\Authlete');
+            $this->getControllerDirectory() . $controller,
+            $this->getControllerNamespace());
     }
 
 
-    private function relocate($source, $target, $namespace)
+    private function relocate($sourceFile, $targetFile, $namespace)
     {
         // The content written into $target.
-        $content = str_replace('_NAMESPACE_', $namespace, file_get_contents($source));
+        $content = str_replace('_NAMESPACE_', $namespace, file_get_contents($sourceFile));
 
         // Write $content to $target.
-        file_put_contents($target, $content);
+        file_put_contents($targetFile, $content);
+    }
+
+
+    private function addWebRoute($method, $path, $controller)
+    {
+        $this->addRoute($method, $path, $controller, base_path('routes/web.php'));
     }
 
 
     private function addApiRoute($method, $path, $controller)
     {
-        $namespace = $this->getAppNamespace() . 'Http\Controllers\Authlete';
+        $this->addRoute($method, $path, $controller, base_path('routes/api.php'));
+    }
 
-        $line = "Route::${method}('${path}', '\\${namespace}\\${controller}');\n";
 
-        file_put_contents(base_path('routes/api.php'), $line, FILE_APPEND);
+    private function addRoute($method, $path, $controller, $targetFile)
+    {
+        $namespace = $this->getControllerNamespace();
+        $content   = "Route::${method}('${path}', '\\${namespace}\\${controller}');\n";
+
+        $this->appendContent($content, $targetFile);
+    }
+
+
+    private function appendContent($content, $targetFile)
+    {
+        file_put_contents($targetFile, $content, FILE_APPEND);
     }
 }
 ?>
