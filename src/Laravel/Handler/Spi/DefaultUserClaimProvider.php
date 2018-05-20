@@ -104,5 +104,17 @@ class DefaultUserClaimProvider implements UserClaimProvider
                 return null;
         }
     }
+
+
+    /**
+     * Get the user given to the constructor.
+     *
+     * @return User
+     *     The user.
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
 }
 ?>
