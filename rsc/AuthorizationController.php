@@ -2,7 +2,9 @@
 namespace _NAMESPACE_;
 
 
+use App\User;
 use Authlete\Laravel\Controller\DefaultAuthorizationController;
+use Illuminate\Http\Request;
 
 
 class AuthorizationController extends DefaultAuthorizationController

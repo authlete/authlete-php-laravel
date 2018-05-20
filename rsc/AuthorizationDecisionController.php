@@ -2,7 +2,9 @@
 namespace _NAMESPACE_;
 
 
+use App\User;
 use Authlete\Laravel\Controller\DefaultAuthorizationDecisionController;
+use Illuminate\Http\Request;
 
 
 class AuthorizationDecisionController extends DefaultAuthorizationDecisionController
