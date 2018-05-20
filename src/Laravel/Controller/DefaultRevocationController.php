@@ -18,16 +18,16 @@
 
 
 /**
- * File containing the definition of RevocationController class.
+ * File containing the definition of DefaultRevocationController class.
  */
 
 
 namespace Authlete\Laravel\Controller;
 
 
+use App\Http\Controllers\Controller;
 use Authlete\Api\AuthleteApi;
 use Authlete\Laravel\Handler\RevocationRequestHandler;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -35,7 +35,7 @@ use Illuminate\Http\Response;
 /**
  * An implementation of revocation endpoint.
  */
-class RevocationController extends Controller
+class DefaultRevocationController extends Controller
 {
     /**
      * The entry point of this controller.
