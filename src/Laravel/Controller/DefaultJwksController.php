@@ -18,7 +18,7 @@
 
 
 /**
- * File containing the definition of JwksController class.
+ * File containing the definition of DefaultJwksController class.
  */
 
 
@@ -45,7 +45,7 @@ use Illuminate\Http\Response;
  * if the OP supports
  * [OpenID Connect Discovery 1.0](https://openid.net/specs/openid-connect-discovery-1_0.html).
  */
-class JwksController extends Controller
+class DefaultJwksController extends Controller
 {
     /**
      * The entry point of this controller.
