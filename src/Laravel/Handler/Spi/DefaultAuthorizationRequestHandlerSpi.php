@@ -78,13 +78,15 @@ implements AuthorizationRequestHandlerSpi
      */
     public function getUserSubject()
     {
-        if (is_null($this->user))
+        $user = $this->getUser();
+
+        if (is_null($user))
         {
             return null;
         }
 
         // Get the unique identifier of the user.
-        $subject = $this->user->getAuthIdentifier();
+        $subject = $user->getAuthIdentifier();
 
         // Convert the identifier to a string.
         return LanguageUtility::toString($subject);

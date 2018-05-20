@@ -27,7 +27,9 @@ namespace Authlete\Laravel\Handler;
 
 use Authlete\Dto\AuthorizationFailAction;
 use Authlete\Dto\AuthorizationFailReason;
+use Authlete\Dto\AuthorizationFailRequest;
 use Authlete\Dto\AuthorizationIssueAction;
+use Authlete\Dto\AuthorizationIssueRequest;
 use Authlete\Dto\Property;
 use Authlete\Laravel\Web\ResponseUtility;
 use Illuminate\Http\Response;
@@ -145,7 +147,7 @@ class AuthorizationRequestBaseHandler extends BaseRequestHandler
             ;
 
         // Call Authlete's /api/auth/authorization/issue API.
-        return $this->api->authorizationIssue($request);
+        return $this->getApi()->authorizationIssue($request);
     }
 
 
@@ -217,7 +219,7 @@ class AuthorizationRequestBaseHandler extends BaseRequestHandler
             ;
 
         // Call Authlete's /api/auth/authorization/fail API.
-        return $this->api->authorizationFail($request);
+        return $this->getApi()->authorizationFail($request);
     }
 }
 ?>
