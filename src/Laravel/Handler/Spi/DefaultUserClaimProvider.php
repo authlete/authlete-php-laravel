@@ -71,19 +71,6 @@ class DefaultUserClaimProvider implements UserClaimProvider
      */
     public function getUserClaimValue($subject, $claimName, $languageTag)
     {
-        switch ($claimName)
-        {
-            case StandardClaims::EMAIL_VERIFIED:
-            case StandardClaims::PHONE_NUMBER_VERIFIED:
-                return false;
-
-            case StandardClaims::UPDATED_AT:
-                return 0;
-
-            default:
-                break;
-        }
-
         if (is_null($this->user))
         {
             return null;
