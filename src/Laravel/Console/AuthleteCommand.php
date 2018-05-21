@@ -43,6 +43,12 @@ class AuthleteCommand extends Command
     private static $rsc = __DIR__ . '/../../../rsc/';
 
 
+    /**
+     * Create a directory if it does not exist.
+     *
+     * @param string $path
+     *     The path of a directory.
+     */
     protected function createDirectory($path)
     {
         if (is_dir($path) === false)
@@ -52,30 +58,55 @@ class AuthleteCommand extends Command
     }
 
 
+    /**
+     * Create a directory for controllers ('Http/Controllers/Authlete/')
+     * under the application directory.
+     */
     protected function getControllerDirectory()
     {
         return app_path('Http/Controllers/Authlete/');
     }
 
 
+    /**
+     * Create a directory for views ('views/authlete/') under the resource
+     * directory.
+     */
     protected function getViewDirectory()
     {
         return resource_path('views/authlete/');
     }
 
 
+    /**
+     * Create a directory for CSS files ('css/authlete/') under the public
+     * directory.
+     */
     protected function getCssDirectory()
     {
         return public_path('css/authlete/');
     }
 
 
+    /**
+     * Get the name space for the controllers which are created under
+     * 'Http/Controllers/Authlete/' directory.
+     */
     protected function getControllerNamespace()
     {
         return $this->getAppNamespace() . 'Http\Controllers\Authlete';
     }
 
 
+    /**
+     * Copy a file from the resource directoy to the target directory.
+     *
+     * @param string $resourceFile
+     *     The name of a resource file.
+     *
+     * @param string $targetDirectory
+     *     The path of a target directory.
+     */
     protected function copyResourceFile($resourceFile, $targetDirectory)
     {
         $source = self::$rsc       . $resourceFile;
@@ -85,6 +116,13 @@ class AuthleteCommand extends Command
     }
 
 
+    /**
+     * Relocate a controller from the resource directory to the controller
+     * directory.
+     *
+     * @param string $controller
+     *     The file name of a controller.
+     */
     protected function relocateController($controller)
     {
         $this->relocate(
@@ -94,7 +132,7 @@ class AuthleteCommand extends Command
     }
 
 
-    protected function relocate($sourceFile, $targetFile, $namespace)
+    private function relocate($sourceFile, $targetFile, $namespace)
     {
         // The content written into $targetFile.
         $content = str_replace('_NAMESPACE_', $namespace, file_get_contents($sourceFile));
@@ -104,19 +142,43 @@ class AuthleteCommand extends Command
     }
 
 
+    /**
+     * Add a route to 'routes/web.php'.
+     *
+     * @param string $method
+     *     An HTTP method such as `post`.
+     *
+     * @param string $path
+     *     The path to which the controller is mapped.
+     *
+     * @param string $controller
+     *     The name of a controller.
+     */
     protected function addWebRoute($method, $path, $controller)
     {
         $this->addRoute($method, $path, $controller, base_path('routes/web.php'));
     }
 
 
+    /**
+     * Add a route to 'routes/api.php'.
+     *
+     * @param string $method
+     *     An HTTP method such as `post`.
+     *
+     * @param string $path
+     *     The path to which the controller is mapped.
+     *
+     * @param string $controller
+     *     The name of a controller.
+     */
     protected function addApiRoute($method, $path, $controller)
     {
         $this->addRoute($method, $path, $controller, base_path('routes/api.php'));
     }
 
 
-    protected function addRoute($method, $path, $controller, $targetFile)
+    private function addRoute($method, $path, $controller, $targetFile)
     {
         $namespace = $this->getControllerNamespace();
         $content   = "Route::${method}('${path}', '\\${namespace}\\${controller}');\n";
@@ -125,6 +187,15 @@ class AuthleteCommand extends Command
     }
 
 
+    /**
+     * Append a content to a target file.
+     *
+     * @param string $content
+     *     A content which is appended to the target file.
+     *
+     * @param string $targetFile
+     *     The path of a target file.
+     */
     protected function appendContent($content, $targetFile)
     {
         file_put_contents($targetFile, $content, FILE_APPEND);
