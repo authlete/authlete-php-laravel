@@ -106,11 +106,21 @@ class AuthleteCommand extends Command
      *
      * @param string $targetDirectory
      *     The path of a target directory.
+     *
+     * @param boolean $overwrite
+     *     `true` to overwrite the target file even if it exists.
+     *     The default value is `true`.
      */
-    protected function copyResourceFile($resourceFile, $targetDirectory)
+    protected function copyResourceFile($resourceFile, $targetDirectory, $overwrite = true)
     {
         $source = self::$rsc       . $resourceFile;
         $target = $targetDirectory . $resourceFile;
+
+        if ($overwrite === false && file_exists($target))
+        {
+            // Not overwrite the target file.
+            return;
+        }
 
         copy($source, $target);
     }
