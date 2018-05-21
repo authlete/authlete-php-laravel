@@ -109,7 +109,8 @@ use Illuminate\Http\Response;
  * `create()` method is a shortcut method to create a validator.
  *
  * ```
- * // Create a validator.
+ * // Create a validator. The access token is extracted from
+ * // the Authorization header of the request.
  * $validator = AccessTokenValidator::create(
  *     $api, $request, $requiredScopes, $requiredSubject);
  *
@@ -284,6 +285,10 @@ class AccessTokenValidator
     /**
      * Create a validator.
      *
+     * The access token is extracted from the `Authorization` header of the
+     * request. Note that the `access_token` query parameter and the
+     * `access_token` form parameter are NOT referred to even if they exist.
+     *
      * @param AuthleteApi $api
      *     An implementation of the `AuthleteApi` interface.
      *
@@ -307,7 +312,7 @@ class AccessTokenValidator
         $requiredSubject = null)
     {
         // The access token contained in the request.
-        $accessToken = WebUtility::extractAccessToken($request);
+        $accessToken = WebUtility::extractAccessTokenFromHeader($request);
 
         // TODO
         // The client certificate contained in the request.
