@@ -30,27 +30,11 @@ use Illuminate\Console\DetectsApplicationNamespace;
 
 
 /**
- * The implementation of the command for "php artisan authlete".
+ * The base class for Authlete*Command classes.
  */
 class AuthleteCommand extends Command
 {
     use DetectsApplicationNamespace;
-
-
-    /**
-     * The name and signature of the console comand.
-     *
-     * @var string
-     */
-    protected $signature = 'authlete';
-
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Set up for an authorization server and an OpenID provider.';
 
 
     /**
@@ -59,45 +43,7 @@ class AuthleteCommand extends Command
     private static $rsc = __DIR__ . '/../../../rsc/';
 
 
-    /**
-     * Execute the console command.
-     */
-    public function handle()
-    {
-        // Create directories as necessary.
-        $this->createDirectory($this->getControllerDirectory());
-        $this->createDirectory($this->getViewDirectory());
-        $this->createDirectory($this->getCssDirectory());
-
-        // Copy files.
-        $this->copyResourceFile('authlete.php', config_path());
-        $this->copyResourceFile('authorization.blade.php', $this->getViewDirectory());
-        $this->copyResourceFile('authorization.css', $this->getCssDirectory());
-
-        // Copy controllers with the namespace replaced.
-        $this->relocateController('AuthorizationController.php');
-        $this->relocateController('AuthorizationDecisionController.php');
-        $this->relocateController('ConfigurationController.php');
-        $this->relocateController('JwksController.php');
-        $this->relocateController('RevocationController.php');
-        $this->relocateController('TokenController.php');
-
-        // Add routes to 'routes/web.php'.
-        $this->appendContent("\n// Routes added by AuthleteCommand.\n", base_path('routes/web.php'));
-        $this->addWebRoute('get',  '/.well-known/openid-configuration', 'ConfigurationController');
-        $this->addWebRoute('get',  '/authorization', 'AuthorizationController');
-        $this->addWebRoute('post', '/authorization', 'AuthorizationController');
-        $this->addWebRoute('post', '/authorization/decision', 'AuthorizationDecisionController');
-
-        // Add routes to 'routes/api.php'.
-        $this->appendContent("\n// Routes added by AuthleteCommand.\n", base_path('routes/api.php'));
-        $this->addApiRoute('get',  '/jwks', 'JwksController');
-        $this->addApiRoute('post', '/revocation', 'RevocationController');
-        $this->addApiRoute('post', '/token', 'TokenController');
-    }
-
-
-    private function createDirectory($path)
+    protected function createDirectory($path)
     {
         if (is_dir($path) === false)
         {
@@ -106,31 +52,31 @@ class AuthleteCommand extends Command
     }
 
 
-    private function getControllerDirectory()
+    protected function getControllerDirectory()
     {
         return app_path('Http/Controllers/Authlete/');
     }
 
 
-    private function getViewDirectory()
+    protected function getViewDirectory()
     {
         return resource_path('views/authlete/');
     }
 
 
-    private function getCssDirectory()
+    protected function getCssDirectory()
     {
         return public_path('css/authlete/');
     }
 
 
-    private function getControllerNamespace()
+    protected function getControllerNamespace()
     {
         return $this->getAppNamespace() . 'Http\Controllers\Authlete';
     }
 
 
-    private function copyResourceFile($resourceFile, $targetDirectory)
+    protected function copyResourceFile($resourceFile, $targetDirectory)
     {
         $source = self::$rsc       . $resourceFile;
         $target = $targetDirectory . $resourceFile;
@@ -139,7 +85,7 @@ class AuthleteCommand extends Command
     }
 
 
-    private function relocateController($controller)
+    protected function relocateController($controller)
     {
         $this->relocate(
             self::$rsc . $controller,
@@ -148,29 +94,29 @@ class AuthleteCommand extends Command
     }
 
 
-    private function relocate($sourceFile, $targetFile, $namespace)
+    protected function relocate($sourceFile, $targetFile, $namespace)
     {
-        // The content written into $target.
+        // The content written into $targetFile.
         $content = str_replace('_NAMESPACE_', $namespace, file_get_contents($sourceFile));
 
-        // Write $content to $target.
+        // Write $content to $targetFile.
         file_put_contents($targetFile, $content);
     }
 
 
-    private function addWebRoute($method, $path, $controller)
+    protected function addWebRoute($method, $path, $controller)
     {
         $this->addRoute($method, $path, $controller, base_path('routes/web.php'));
     }
 
 
-    private function addApiRoute($method, $path, $controller)
+    protected function addApiRoute($method, $path, $controller)
     {
         $this->addRoute($method, $path, $controller, base_path('routes/api.php'));
     }
 
 
-    private function addRoute($method, $path, $controller, $targetFile)
+    protected function addRoute($method, $path, $controller, $targetFile)
     {
         $namespace = $this->getControllerNamespace();
         $content   = "Route::${method}('${path}', '\\${namespace}\\${controller}');\n";
@@ -179,7 +125,7 @@ class AuthleteCommand extends Command
     }
 
 
-    private function appendContent($content, $targetFile)
+    protected function appendContent($content, $targetFile)
     {
         file_put_contents($targetFile, $content, FILE_APPEND);
     }

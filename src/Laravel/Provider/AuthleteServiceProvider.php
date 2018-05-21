@@ -49,15 +49,13 @@ use Illuminate\Support\ServiceProvider;
  * ],
  * ```
  *
- * The singleton instance refers to `config/authlete.php` on its creation.
- * The `boot()` method of this service provider publishes 'authlete.php'.
- * Parameters in the configuration file can be found in the description of
- * the `AuthleteLaravelConfiguration` class.
- *
  * If the version of Laravel is 5.5 or higher, this service provider will
  * be automatically detected thanks to the feature of 'auto-discovery'.
  * Therefore, you don't have to modify `config/app.php` to add this service
  * provider manually.
+ *
+ * The `boot()` method of this service provider registers some commands for
+ * "php artisan authlete:*".
  */
 class AuthleteServiceProvider extends ServiceProvider
 {
@@ -89,15 +87,14 @@ class AuthleteServiceProvider extends ServiceProvider
 
 
     /**
-     * Register a command for "php artisan authlete".
+     * Register some "php artisan authlete:*" commands.
      */
     public function boot()
     {
         if ($this->app->runningInConsole())
         {
-            // Register a command for "php artisan authlete".
             $this->commands([
-                AuthleteCommand::class
+                AuthleteAuthorizationServerCommand::class
             ]);
         }
     }
