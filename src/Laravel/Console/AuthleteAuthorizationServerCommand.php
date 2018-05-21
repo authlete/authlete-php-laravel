@@ -58,7 +58,7 @@ class AuthleteAuthorizationServerCommand extends AuthleteCommand
         $this->createDirectory($this->getCssDirectory());
 
         // Copy files.
-        $this->copyResourceFile('authlete.php', config_path());
+        $this->copyResourceFile('authlete.php', config_path(), false);
         $this->copyResourceFile('authorization.blade.php', $this->getViewDirectory());
         $this->copyResourceFile('authorization.css', $this->getCssDirectory());
 
