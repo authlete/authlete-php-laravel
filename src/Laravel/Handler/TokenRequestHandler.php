@@ -96,7 +96,7 @@ class TokenRequestHandler extends BaseRequestHandler
         $response = $this->callTokenApi($request);
 
         // 'action' in the response denotes the next action which the
-        // implementation of userinfo endpoint should take.
+        // implementation of token endpoint should take.
         $action = $response->getAction();
 
         // The content of the response to the client application.
