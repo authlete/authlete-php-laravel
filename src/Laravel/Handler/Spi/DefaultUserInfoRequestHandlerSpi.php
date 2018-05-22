@@ -64,10 +64,10 @@ implements UserInfoRequestHandlerSpi
      */
     public function getUserClaimValue($subject, $claimName, $languageTag)
     {
-        if ($tried === false)
+        if ($this->tried === false)
         {
             $this->setUser(User::find($subject));
-            $tried = true;
+            $this->tried = true;
         }
 
         return parent::getUserClaimValue($subject, $claimName, $languageTag);
