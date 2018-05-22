@@ -97,21 +97,21 @@ class WebUtility
     public static function extractAccessToken(Request $request)
     {
         // 1. RFC 6750, 2.1. Authorization Request Header Field
-        $accessToken = $this->extractAccessTokenFromHeader($request);
+        $accessToken = self::extractAccessTokenFromHeader($request);
         if (is_null($accessToken) === false)
         {
             return $accessToken;
         }
 
         // 2. RFC 6750, 2.2. Form-Encoded Body Parameter
-        $accessToken = $this->extractAccessTokenFromBody($request);
+        $accessToken = self::extractAccessTokenFromBody($request);
         if (is_null($accessToken) === false)
         {
             return $accessToken;
         }
 
         // 3. RFC 6750, 2.3. URI Query Parameter
-        $accessToken = $this->extractAccessTokenFromQuery($request);
+        $accessToken = self::extractAccessTokenFromQuery($request);
 
         return $accessToken;
     }
