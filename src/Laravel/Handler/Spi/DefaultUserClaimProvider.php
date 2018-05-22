@@ -71,7 +71,9 @@ class DefaultUserClaimProvider implements UserClaimProvider
      */
     public function getUserClaimValue($subject, $claimName, $languageTag)
     {
-        if (is_null($this->user))
+        $user = $this->getUser();
+
+        if (is_null($user))
         {
             return null;
         }
@@ -82,10 +84,10 @@ class DefaultUserClaimProvider implements UserClaimProvider
                 return $subject;
 
             case StandardClaims::NAME:
-                return $this->user->name;
+                return $user->name;
 
             case StandardClaims::EMAIL:
-                return $this->user->email;
+                return $user->email;
 
             default:
                 return null;
@@ -94,7 +96,7 @@ class DefaultUserClaimProvider implements UserClaimProvider
 
 
     /**
-     * Get the user given to the constructor.
+     * Get the user.
      *
      * @return User
      *     The user.
@@ -102,6 +104,23 @@ class DefaultUserClaimProvider implements UserClaimProvider
     public function getUser()
     {
         return $this->user;
+    }
+
+
+    /**
+     * Set the user.
+     *
+     * @param User $user
+     *     The user.
+     *
+     * @return DefaultUserClaimProvider
+     *     `$this` object.
+     */
+    public function setUser(User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }
 ?>
