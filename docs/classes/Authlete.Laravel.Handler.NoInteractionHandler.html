@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Authlete.html">\Authlete</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">1</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-656771410"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-656771410" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-403967255"></a>
+                                <a href="../namespaces/Authlete.html" style="margin-left: 30px; padding-left: 0">Authlete</a>
+            </div>
+            <div id="namespace-403967255" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-393482276"></a>
+                                <a href="../namespaces/Authlete.Laravel.html" style="margin-left: 30px; padding-left: 0">Laravel</a>
+            </div>
+            <div id="namespace-393482276" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-3749520"></a>
+                                <a href="../namespaces/Authlete.Laravel.Conf.html" style="margin-left: 30px; padding-left: 0">Conf</a>
+            </div>
+            <div id="namespace-3749520" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Authlete.Laravel.Conf.AuthleteLaravelConfiguration.html">AuthleteLaravelConfiguration</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-814880557"></a>
+                                <a href="../namespaces/Authlete.Laravel.Console.html" style="margin-left: 30px; padding-left: 0">Console</a>
+            </div>
+            <div id="namespace-814880557" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Authlete.Laravel.Console.AuthleteAuthorizationServerCommand.html">AuthleteAuthorizationServerCommand</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Console.AuthleteCommand.html">AuthleteCommand</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Console.AuthleteResourceServerCommand.html">AuthleteResourceServerCommand</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-46537179"></a>
+                                <a href="../namespaces/Authlete.Laravel.Controller.html" style="margin-left: 30px; padding-left: 0">Controller</a>
+            </div>
+            <div id="namespace-46537179" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Authlete.Laravel.Controller.DefaultAuthorizationController.html">DefaultAuthorizationController</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Controller.DefaultAuthorizationDecisionController.html">DefaultAuthorizationDecisionController</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Controller.DefaultConfigurationController.html">DefaultConfigurationController</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Controller.DefaultJwksController.html">DefaultJwksController</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Controller.DefaultRevocationController.html">DefaultRevocationController</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Controller.DefaultTokenController.html">DefaultTokenController</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Controller.DefaultUserInfoController.html">DefaultUserInfoController</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-489969018"></a>
+                                <a href="../namespaces/Authlete.Laravel.Handler.html" style="margin-left: 30px; padding-left: 0">Handler</a>
+            </div>
+            <div id="namespace-489969018" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-154595456"></a>
+                                <a href="../namespaces/Authlete.Laravel.Handler.Spi.html" style="margin-left: 30px; padding-left: 0">Spi</a>
+            </div>
+            <div id="namespace-154595456" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Authlete.Laravel.Handler.Spi.AuthorizationRequestDecisionHandlerSpi.html">AuthorizationRequestDecisionHandlerSpi</a></li>
+                                                    <li class="interface"><a href="../classes/Authlete.Laravel.Handler.Spi.AuthorizationRequestHandlerSpi.html">AuthorizationRequestHandlerSpi</a></li>
+                                                    <li class="interface"><a href="../classes/Authlete.Laravel.Handler.Spi.NoInteractionHandlerSpi.html">NoInteractionHandlerSpi</a></li>
+                                                    <li class="interface"><a href="../classes/Authlete.Laravel.Handler.Spi.TokenRequestHandlerSpi.html">TokenRequestHandlerSpi</a></li>
+                                                    <li class="interface"><a href="../classes/Authlete.Laravel.Handler.Spi.UserClaimProvider.html">UserClaimProvider</a></li>
+                                                    <li class="interface"><a href="../classes/Authlete.Laravel.Handler.Spi.UserInfoRequestHandlerSpi.html">UserInfoRequestHandlerSpi</a></li>
+                                                                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.Spi.AuthorizationRequestDecisionHandlerSpiAdapter.html">AuthorizationRequestDecisionHandlerSpiAdapter</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.Spi.AuthorizationRequestHandlerSpiAdapter.html">AuthorizationRequestHandlerSpiAdapter</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.Spi.DefaultAuthorizationRequestDecisionHandlerSpi.html">DefaultAuthorizationRequestDecisionHandlerSpi</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.Spi.DefaultAuthorizationRequestHandlerSpi.html">DefaultAuthorizationRequestHandlerSpi</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.Spi.DefaultNoInteractionHandlerSpi.html">DefaultNoInteractionHandlerSpi</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.Spi.DefaultTokenRequestHandlerSpi.html">DefaultTokenRequestHandlerSpi</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.Spi.DefaultUserClaimProvider.html">DefaultUserClaimProvider</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.Spi.DefaultUserInfoRequestHandlerSpi.html">DefaultUserInfoRequestHandlerSpi</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.Spi.NoInteractionHandlerSpiAdapter.html">NoInteractionHandlerSpiAdapter</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.Spi.TokenRequestHandlerSpiAdapter.html">TokenRequestHandlerSpiAdapter</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.Spi.UserClaimProviderAdapter.html">UserClaimProviderAdapter</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.Spi.UserInfoRequestHandlerSpiAdapter.html">UserInfoRequestHandlerSpiAdapter</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.AuthorizationRequestBaseHandler.html">AuthorizationRequestBaseHandler</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.AuthorizationRequestDecisionHandler.html">AuthorizationRequestDecisionHandler</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.AuthorizationRequestErrorHandler.html">AuthorizationRequestErrorHandler</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.BaseRequestHandler.html">BaseRequestHandler</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.ClaimCollector.html">ClaimCollector</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.ConfigurationRequestHandler.html">ConfigurationRequestHandler</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.IntrospectionRequestHandler.html">IntrospectionRequestHandler</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.JwksRequestHandler.html">JwksRequestHandler</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.NoInteractionHandler.html">NoInteractionHandler</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.RevocationRequestHandler.html">RevocationRequestHandler</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.TokenRequestHandler.html">TokenRequestHandler</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Handler.UserInfoRequestHandler.html">UserInfoRequestHandler</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1058549290"></a>
+                                <a href="../namespaces/Authlete.Laravel.Provider.html" style="margin-left: 30px; padding-left: 0">Provider</a>
+            </div>
+            <div id="namespace-1058549290" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Authlete.Laravel.Provider.AuthleteServiceProvider.html">AuthleteServiceProvider</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1351858935"></a>
+                                <a href="../namespaces/Authlete.Laravel.Util.html" style="margin-left: 30px; padding-left: 0">Util</a>
+            </div>
+            <div id="namespace-1351858935" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Authlete.Laravel.Util.UserUtility.html">UserUtility</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-515143733"></a>
+                                <a href="../namespaces/Authlete.Laravel.Web.html" style="margin-left: 30px; padding-left: 0">Web</a>
+            </div>
+            <div id="namespace-515143733" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Authlete.Laravel.Web.AccessTokenValidator.html">AccessTokenValidator</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Web.ResponseUtility.html">ResponseUtility</a></li>
+                                                    <li class="class"><a href="../classes/Authlete.Laravel.Web.WebUtility.html">WebUtility</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Authlete.Laravel.Handler.html">\Authlete\Laravel\Handler</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Authlete\Laravel\Handler</small>NoInteractionHandler</h1>
+                    <p><em>Handler for the case where an authorization request should be processed
+without user interaction.</em></p>
+                    <p>A response from Authlete's <code>/api/auth/authorization</code> API contains an
+<code>action</code> response parameter. When the value of the response parameter is
+<code>AuthorizationAction::$NO_INTERACTION</code>, the authorization request needs to
+be processed without user interaction. This class is a handler for the case.</p>
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Authlete.Laravel.Handler.NoInteractionHandler.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Authlete.Laravel.Handler.BaseRequestHandler.html#method_getApi" class="">getApi()</a><br />
+                                                                    <a href="../classes/Authlete.Laravel.Handler.NoInteractionHandler.html#method_handle" class="">handle()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/Authlete.Laravel.Handler.AuthorizationRequestBaseHandler.html#method_authorizationIssue" class="">authorizationIssue()</a><br />
+                                                                    <a href="../classes/Authlete.Laravel.Handler.AuthorizationRequestBaseHandler.html#method_authorizationFail" class="">authorizationFail()</a><br />
+                                                                    <a href="../classes/Authlete.Laravel.Handler.BaseRequestHandler.html#method_unknownAction" class="">unknownAction()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/Handler.NoInteractionHandler.html"><div class="path-wrapper">Handler/NoInteractionHandler.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+                                        <div class="namespace-wrapper"><a href="../classes/Authlete.Laravel.Handler.BaseRequestHandler.html">\Authlete\Laravel\Handler\BaseRequestHandler</a></div>
+                                                                    
+                                        <div class="namespace-wrapper"><a href="../classes/Authlete.Laravel.Handler.AuthorizationRequestBaseHandler.html">\Authlete\Laravel\Handler\AuthorizationRequestBaseHandler</a></div>
+                                                                                                    <div class="namespace-wrapper">\Authlete\Laravel\Handler\NoInteractionHandler</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr><td colspan="2"><em>None found</em></td></tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                        
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(\Authlete\Api\AuthleteApi  <span class="argument">$api</span>, \Authlete\Laravel\Handler\Spi\NoInteractionHandlerSpi  <span class="argument">$spi</span>) </pre>
+                <p><em>Constructor.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\Authlete\Api\AuthleteApi</td>
+                                <td>$api </td>
+                                <td><p>An implementation of the <code>AuthleteApi</code> interface.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td><a href="../classes/Authlete.Laravel.Handler.Spi.NoInteractionHandlerSpi.html">\Authlete\Laravel\Handler\Spi\NoInteractionHandlerSpi</a></td>
+                                <td>$spi </td>
+                                <td><p>An implementation of the <code>NoInteractionHandler</code> interface.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getApi" name="method_getApi" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getApi()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getApi() : \Authlete\Api\AuthleteApi</pre>
+                <p><em>Get the implementation of the AuthleteApi interface.</em></p>
+                <p>The value returned from this method is the instance that was given to
+the constructor.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    \Authlete\Api\AuthleteApi
+                                            &mdash; <p>An implementation of the <code>AuthleteApi</code> interface.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Authlete.Laravel.Handler.BaseRequestHandler.html"><div class="path-wrapper">\Authlete\Laravel\Handler\BaseRequestHandler</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_handle" name="method_handle" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">handle()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">handle(\Authlete\Dto\AuthorizationResponse  <span class="argument">$response</span>) : \Illuminate\Http\Response</pre>
+                <p><em>Handle an authorization request without user interaction.</em></p>
+                <p>This method calls Authlete's <code>/api/auth/authorization/issue</code> API or
+<code>/api/auth/authorization/fail</code> API.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\Authlete\Dto\AuthorizationResponse</td>
+                                <td>$response </td>
+                                <td><p>A response from Authlete's <code>/api/auth/authorization</code> API.</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Authlete\Api\AuthleteApiException</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    \Illuminate\Http\Response
+                                            &mdash; <p>An HTTP response that should be returned to the user agent. If
+<code>$response-&gt;getAction()</code> is not <code>AuthorizationAction::$NO_INTERACTION</code>,
+this method returns <code>null</code>.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_authorizationIssue" name="method_authorizationIssue" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">authorizationIssue()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">authorizationIssue(string  <span class="argument">$ticket</span>, string  <span class="argument">$subject</span>, integer|string  <span class="argument">$authTime</span>, string  <span class="argument">$acr</span>, array  <span class="argument">$claims = null</span>, array&lt;mixed,\Authlete\Dto\Property&gt;  <span class="argument">$properties = null</span>, array&lt;mixed,string&gt;  <span class="argument">$scopes = null</span>, string  <span class="argument">$sub</span>) : \Illuminate\Http\Response</pre>
+                <p><em>Call Authlete&#039;s /api/auth/authorization/issue API and generate a
+Response instance according to the value of the &quot;action&quot; parameter
+in the response from the API.</em></p>
+                <p>Read the description of <code>AuthorizationIssueRequest</code> for details about
+the parameters given to this method.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$ticket </td>
+                                <td><p>The ticket which was issued from Authlete's
+<code>/api/auth/authorization</code> API.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$subject </td>
+                                <td><p>The subject (= unique identifier) of the end-user.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer|string</td>
+                                <td>$authTime </td>
+                                <td><p>The time at which the end-user was authenticated. The value should
+be seconds since the Unix epoch (1970-Jan-1).</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$acr </td>
+                                <td><p>The Authentication Context Class Reference performed for the
+end-user authentication.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$claims </td>
+                                <td><p>The claims about the end-user.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array&lt;mixed,\Authlete\Dto\Property&gt;</td>
+                                <td>$properties </td>
+                                <td><p>Arbitrary properties to be associated with an access token and/or
+an authorization code.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>array&lt;mixed,string&gt;</td>
+                                <td>$scopes </td>
+                                <td><p>Scopes to be associated with an access token and/or an authorization
+code.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$sub </td>
+                                <td><p>The value of the <code>sub</code> claim which is embedded in an ID token.
+If this argument is <code>null</code>, the value of <code>$subject</code> will be used
+instead.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \Illuminate\Http\Response
+                                            &mdash; <p>An HTTP response that should be returned from the authorization
+endpoint implementation to the user agent.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Authlete.Laravel.Handler.AuthorizationRequestBaseHandler.html"><div class="path-wrapper">\Authlete\Laravel\Handler\AuthorizationRequestBaseHandler</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_authorizationFail" name="method_authorizationFail" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">authorizationFail()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">authorizationFail(string  <span class="argument">$ticket</span>, \Authlete\Dto\AuthorizationFailReason  <span class="argument">$reason</span>) : \Illuminate\Http\Response</pre>
+                <p><em>Call Authlete&#039;s /api/auth/authorization/fail API and generate a
+Response instance according to the value of the &quot;action&quot; parameter
+in the response from the API.</em></p>
+                <p>Read the description of <code>AuthorizationFailRequest</code> for details about
+the parameters given to this method.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$ticket </td>
+                                <td><p>The ticket which was issued from Authlete's
+<code>/api/auth/authorization</code> API.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>\Authlete\Dto\AuthorizationFailReason</td>
+                                <td>$reason </td>
+                                <td><p>The reason of the failure of the authorization request.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \Illuminate\Http\Response
+                                            &mdash; <p>An HTTP response that should be returned from the authorization
+endpoint implementation to the user agent.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Authlete.Laravel.Handler.AuthorizationRequestBaseHandler.html"><div class="path-wrapper">\Authlete\Laravel\Handler\AuthorizationRequestBaseHandler</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_unknownAction" name="method_unknownAction" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">unknownAction()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">unknownAction(string  <span class="argument">$apiPath</span>) : \Illuminate\Http\Response</pre>
+                <p><em>A utility method to generate a Response instance with
+&quot;500 Internal Server Error&quot; and an error message in JSON.</em></p>
+                <p>This method is expected to be used when the value of the <code>action</code>
+parameter in a response from an Authlete API holds an unexpected
+value.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$apiPath </td>
+                                <td><p>The path of an Authlete API.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    \Illuminate\Http\Response
+                                            &mdash; <p>A Response instahce which represents a server error.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Authlete.Laravel.Handler.BaseRequestHandler.html"><div class="path-wrapper">\Authlete\Laravel\Handler\BaseRequestHandler</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">NoInteractionHandler.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/Handler/NoInteractionHandler.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Authlete.html">\Authlete</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on May 22nd, 2018 at 21:38.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
