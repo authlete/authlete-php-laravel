@@ -116,12 +116,29 @@ class DefaultAuthorizationDecisionController extends Controller
             return Auth::user();
         }
 
+        // The database column for unique user identifiers.
+        $field = $this->username();
+
         // The credentials input by the user to the login form.
         $loginId  = $request->input('loginId');
         $password = $request->input('password');
 
         // Find the user who has the credentials.
-        return UserUtility::findUser($loginId, $password);
+        return UserUtility::findUserByCredentials($loginId, $password, $field);
+    }
+
+
+    /**
+     * Get the database column for unique user identifiers.
+     *
+     * The default implementation of this method returns `'email'`.
+     *
+     * @return string
+     *     The detabase column for unique user identifiers.
+     */
+    protected function username()
+    {
+        return 'email';
     }
 
 

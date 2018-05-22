@@ -51,7 +51,7 @@ class DefaultTokenRequestHandlerSpi implements TokenRequestHandlerSpi
         $field = $this->username();
 
         // Look up the user who has the credentials.
-        $user = UserUtility::findUser($username, $password, $field);
+        $user = UserUtility::findUserByCredentials($username, $password, $field);
 
         // Return the subject (= unique identifier) of the user.
         // When $user is null, getUserSubject() returns null.

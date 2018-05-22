@@ -52,7 +52,7 @@ class UserUtility
      * @return User
      *     The user. If not found, `null` is returned.
      */
-    public static function findUser($username, $password, $field = 'email')
+    public static function findUserByCredentials($username, $password, $field = 'email')
     {
         // Credentials used for user authentication.
         $credentials = array(
