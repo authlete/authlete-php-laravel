@@ -213,6 +213,8 @@ class AccessTokenValidator
         }
 
         $this->requiredScopes = $requiredScopes;
+
+        return $this;
     }
 
 
