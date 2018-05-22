@@ -113,16 +113,21 @@ class AuthleteCommand extends Command
      */
     protected function copyResourceFile($resourceFile, $targetDirectory, $overwrite = true)
     {
-        $source = self::$rsc       . $resourceFile;
-        $target = $targetDirectory . $resourceFile;
+        if (substr($targetDirectory, -1) !== '/')
+        {
+            $targetDirectory = $targetDirectory . '/';
+        }
 
-        if ($overwrite === false && file_exists($target))
+        $sourceFile = self::$rsc       . $resourceFile;
+        $targetFile = $targetDirectory . $resourceFile;
+
+        if ($overwrite === false && file_exists($targetFile))
         {
             // Not overwrite the target file.
             return;
         }
 
-        copy($source, $target);
+        copy($sourceFile, $targetFile);
     }
 
 
