@@ -28,7 +28,8 @@ namespace Authlete\Laravel\Provider;
 use Authlete\Api\AuthleteApi;
 use Authlete\Api\AuthleteApiImpl;
 use Authlete\Laravel\Conf\AuthleteLaravelConfiguration;
-use Authlete\Laravel\Console\AuthleteCommand;
+use Authlete\Laravel\Console\AuthleteAuthorizationServerCommand;
+use Authlete\Laravel\Console\AuthleteResourceServerCommand;
 use Illuminate\Support\ServiceProvider;
 
 
@@ -94,7 +95,8 @@ class AuthleteServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole())
         {
             $this->commands([
-                AuthleteAuthorizationServerCommand::class
+                AuthleteAuthorizationServerCommand::class,
+                AuthleteResourceServerCommand::class
             ]);
         }
     }
