@@ -77,7 +77,7 @@ class DefaultAuthorizationController extends Controller
                 return $this->handleInteraction($api, $request, $response);
 
             case AuthorizationAction::$NO_INTERACTION:
-                // Process the authorizatino request without user interaction.
+                // Process the authorization request without user interaction.
                 // The flow reaches here only when the authorization request
                 // contains 'prompt=none'.
                 return $this->handleNoInteraction($api, $request, $response);
