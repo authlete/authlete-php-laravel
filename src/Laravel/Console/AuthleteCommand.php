@@ -34,9 +34,6 @@ use Illuminate\Console\DetectsApplicationNamespace;
  */
 class AuthleteCommand extends Command
 {
-    use DetectsApplicationNamespace;
-
-
     /**
      * The directory that holds resources.
      */
@@ -94,7 +91,7 @@ class AuthleteCommand extends Command
      */
     protected function getControllerNamespace()
     {
-        return $this->getAppNamespace() . 'Http\Controllers\Authlete';
+        return $this->laravel->getNamespace() . 'Http\Controllers\Authlete';
     }
 
 
