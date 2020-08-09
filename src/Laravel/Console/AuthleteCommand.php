@@ -91,7 +91,7 @@ class AuthleteCommand extends Command
      */
     protected function getControllerNamespace()
     {
-        return \App::getNamespace() . 'Http\Controllers\Authlete';
+        return $this->laravel->getNamespace() . 'Http\Controllers\Authlete';
     }
 
 
