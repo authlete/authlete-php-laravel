@@ -1,6 +1,9 @@
 CHANGES
-=======
-
+===============
+1.2.0 (2023-03-20)
+------------------
+- Disable browser cache by adding headers to `authorization.blade.php` view
+- Modifying `composer.json` file to match the latest version of PHP
 1.1.0 (2020-08-09)
 ------------------
 
